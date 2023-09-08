@@ -2,53 +2,55 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, create_engine
+import os
+import models
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy import Column, String, ForeignKey, DateTime
 
 Base = declarative_base()
 
 
-class BaseModel(Base):
+class BaseModel:
     """A base class for all hbnb models"""
-    id = Column(String(60), nullable=False, primary_key=True)
-    create_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        id = Column(String(60), primary_key=True, nullable=False, default=lambda: str(uuid.uuid4()))
+        '''CHECK: DATETIME CAN"T BE NULL'''
+        created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+        updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
-            "if there is not argumment key, value when create the instance"
-            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            "Create instance attribute for instance attribute"
-            self.name = str()
+            self.updated_at = self.created_at
         else:
-            "if there is a argumment key, value when create the instance"
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            "Delete key=class, there isnt an attributte to appear"
-            del kwargs['__class__']
-            "Update the dictionary of attributes"
-            self.__dict__.update(kwargs)
+            if kwargs.get("created_at"):
+                kwargs["created_at"] = datetime.strptime(
+                    kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            else:
+                self.created_at = datetime.now()
+            if kwargs.get("created_at"):
+                kwargs["updated_at"] = datetime.strptime(
+                    kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            else:
+                self.updated_at = datetime.now()
+            for key, value in kwargs.items():
+                if "__class__" not in key:
+                    setattr(self, key, value)
+            if not self.id:
+                self.id = str(uuid.uuid4())
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        "Obtain name of the class split the str"
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        from models import storage
         self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -58,10 +60,10 @@ class BaseModel(Base):
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        "Remove the key _sa_instance_state from dictionary"
-        dictionary.pop['_sa_instance_state', None]
+        if '_sa_instance_state' in dictionary.keys():
+            dictionary.pop('_sa_instance_state', None)
         return dictionary
-
+        
     def delete(self):
-        "Delete the current instance from the storage"
-        storage.delete(self)
+        """Delete the current instance from the storage"""
+        models.storage.delete(self)
