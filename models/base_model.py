@@ -56,7 +56,7 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         for key, value in self.__dict__.items():
-            if key != '_sa_instance_state' and key != '__class__':
+            if key != '_sa_instance_state' and key! = __class__:
                 dictionary[key] = value
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
