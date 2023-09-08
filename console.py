@@ -8,6 +8,10 @@ from models.base_model import BaseModel
 from models.__init__ import storage
 from models.state import State
 from models.city import City
+from models.user import User
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 from sqlalchemy import create_engine
 
 
@@ -19,7 +23,9 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'State': State, 'City': City
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'State': State, 'City': City, 'Amenity': Amenity,
+               'Review': Review
                }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
