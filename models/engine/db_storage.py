@@ -42,7 +42,7 @@ class DBStorage():
     def all(self, cls=None):
         """ Query on current database for all o specify class"""
         dic = {}
-        types_obj = [State, City]
+        types_obj = [State, City, User, Place, Amenity, Review]
         if type(cls) == str:
             return dic
         if cls is not None and cls in types_obj:
