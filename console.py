@@ -15,7 +15,6 @@ from models.review import Review
 from sqlalchemy import create_engine
 
 
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -132,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
             parameter_key, parameter_value = value.split("=")
             if (parameter_value[0] == '"'):
                 var_to_replace = parameter_value[1:-1].replace("_", " ")
-                input_dict[parameter_key] =var_to_replace
+                input_dict[parameter_key] = var_to_replace
             elif '.' in parameter_value:
                 parameter_value = float(parameter_value)
                 input_dict[parameter_key] = parameter_value

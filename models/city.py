@@ -8,6 +8,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import relationship
 import os
 
+
 class City(BaseModel, Base):
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
         """ defines the attributes to be stored in the DB """

@@ -13,11 +13,12 @@ Base = declarative_base()
 class BaseModel:
     """A base class for all hbnb models"""
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
-        id = Column(String(60), primary_key=True, nullable=False, default=lambda: str(uuid.uuid4()))
+        id = Column(String(60), primary_key=True, nullable=False,
+                    default=lambda: str(uuid.uuid4()))
         '''CHECK: DATETIME CAN"T BE NULL'''
         created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
         updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -61,7 +62,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
-        
+
     def delete(self):
         """Delete the current instance from the storage"""
         models.storage.delete(self)
