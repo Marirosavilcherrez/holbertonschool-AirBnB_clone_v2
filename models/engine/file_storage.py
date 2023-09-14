@@ -65,3 +65,7 @@ class FileStorage:
             FileStorage.__objects.pop(key, None)
         else:
             pass
+
+    def close(self):
+        """Close the current session and reload data from the JSON file"""
+        reload()
