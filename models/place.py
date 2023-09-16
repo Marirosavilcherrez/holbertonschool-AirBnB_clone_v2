@@ -35,21 +35,6 @@ if os.getenv("HBNB_TYPE_STORAGE") == "db":
                                          ForeignKey("amenities.id"),
                                          primary_key=True, nullable=False))
 
-else:
-    class Place(BaseModel):
-        """ defines the attributes to be stored in the JSON """
-        city_id = ''
-        user_id = ''
-        name = ''
-        description = ''
-        number_rooms = ''
-        number_bathrooms = ''
-        max_guest = ''
-        price_by_night = ''
-        latitude = ''
-        longitude = ''
-        amenity_ids = []
-        
         @property
         def reviews(self):
             """Get a list of all Reviews"""
@@ -73,3 +58,18 @@ else:
             """ Value help Amenities"""
             if type(value) == Amenity:
                 self.amenity_ids.append(value.id)
+
+else:
+    class Place(BaseModel):
+        """ defines the attributes to be stored in the JSON """
+        city_id = ''
+        user_id = ''
+        name = ''
+        description = ''
+        number_rooms = ''
+        number_bathrooms = ''
+        max_guest = ''
+        price_by_night = ''
+        latitude = ''
+        longitude = ''
+        amenity_ids = []
