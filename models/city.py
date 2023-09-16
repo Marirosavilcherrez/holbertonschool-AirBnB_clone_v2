@@ -9,14 +9,15 @@ from sqlalchemy.orm import relationship
 import os
 
 
-class City(BaseModel, Base):
-    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+if os.getenv("HBNB_TYPE_STORAGE") == "db":
+    class City(BaseModel, Base):
         """ defines the attributes to be stored in the DB """
         __tablename__ = 'cities'
         name = Column(String(128), nullable=False)
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
 
-    else:
+else:
+    class City(BaseModel):
         """defines the attributes to be stored in the JSON"""
-        state_id = ""
         name = ""
+        state_id = ""

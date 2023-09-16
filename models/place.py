@@ -8,9 +8,10 @@ from models.review import Review
 from models.amenity import Amenity
 import os
 
-class Place(BaseModel, Base):
-    """ defines the attributes to be stored in the DB """
-    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+
+if os.getenv("HBNB_TYPE_STORAGE") == "db":
+    class Place(BaseModel, Base):
+        """ defines the attributes to be stored in the DB """
         __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -34,7 +35,8 @@ class Place(BaseModel, Base):
                                          ForeignKey("amenities.id"),
                                          primary_key=True, nullable=False))
 
-    else:
+else:
+    class Place(BaseModel):
         """ defines the attributes to be stored in the JSON """
         city_id = ''
         user_id = ''
@@ -62,7 +64,7 @@ class Place(BaseModel, Base):
             """ Get Linked Amenities"""
             amenitylist = []
             for amenity in list(models.storage.all(Amenity).values()):
-                if amenity.id in self.amenity_ids:
+                if amenity.id == self.amenity_ids:
                     amenitylist.append(amenity)
             return amenitylist
             

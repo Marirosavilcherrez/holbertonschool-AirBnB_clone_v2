@@ -68,4 +68,4 @@ class FileStorage:
 
     def close(self):
         """Close the current session and reload data from the JSON file"""
-        reload()
+        self.reload()

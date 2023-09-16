@@ -70,9 +70,10 @@ class DBStorage():
         """delete from the current DB session obj if not None"""
         if obj is not None:
             self.__session.delete(obj)
-
+        else:
+            pass
     def reload(self):
-        self.__session = Base.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
