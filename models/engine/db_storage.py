@@ -72,7 +72,7 @@ class DBStorage():
             self.__session.delete(obj)
         else:
             pass
-            
+
     def reload(self):
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
