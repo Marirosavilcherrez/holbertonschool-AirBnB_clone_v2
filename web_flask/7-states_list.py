@@ -52,7 +52,7 @@ def number_odd_route(n):
 @app.route('/states_list', strict_slashes=False)
 def html_route():
     "Display a list of all State objects sorted by name"
-    states = storage.all("States")
+    states = storage.all('States')
     return render_template('7-states_list.html', states=states)
 
 
@@ -63,4 +63,4 @@ def close_route(err):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port='5000', debug=True)
