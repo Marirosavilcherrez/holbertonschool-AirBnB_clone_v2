@@ -48,16 +48,19 @@ def number_odd_route(n):
         return render_template('6-number_odd_or_even.html', number=n,
                                odd_even=odd_or_even)
 
+
 @app.route('/states_list', strict_slashes=False)
 def html_route():
     "Display a list of all State objects sorted by name"
-    states = storage.all().values("States")
+    states = storage.all("States")
     return render_template('7-states_list.html', states=states)
 
+
 @app.teardown_appcontext
-def close_route(exception):
+def close_route(err):
     "Close the SQLAlchemy Session"
     storage.close()
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
